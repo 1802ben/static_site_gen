@@ -1,5 +1,3 @@
-
-
 class HTMLNode():
     def __init__(self,tag = None,value = None,children = None,props = None):
         self.tag = tag
@@ -35,7 +33,7 @@ class ParentNode(HTMLNode):
 
     def to_html(self):
 
-        print("to_html called on", self)
+        #print("to_html called on", self)
         if self.tag == None: raise ValueError("ParentNode requires tag")
         if self.children == None: raise ValueError("ParentNode requires children")
         s = f"<{self.tag}>"
@@ -44,3 +42,4 @@ class ParentNode(HTMLNode):
             s += node.to_html()
         s += f"</{self.tag}>"
         return s
+    
