@@ -1,36 +1,29 @@
-from textnode import TextType, TextNode
 import os
 import shutil
 
+from copystatic import copy_files_recursive
+from gencontent import generate_page
 
-print("hello world")
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
 
 
 def main():
-    TestNode = TextNode("This is some anchor text",
-                         TextType.LINK, "https://www.site.dev")
-    print(repr(TestNode))
-    sync_directories("static", "public")
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
-def sync_directories(src: str, dst: str):
-    if os.path.exists(dst):
-        shutil.rmtree(dst)
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
 
-    os.makedirs(dst, exist_ok=True)
-
-    def recursive_copy(current_src, current_dst):
-        for item in os.listdir(current_src):
-            s_path = os.path.join(current_src, item)
-            d_path = os.path.join(current_dst, item)
-            if os.path.isdir(s_path):
-                os.makedirs(d_path, exist_ok=True)
-                recursive_copy(s_path, d_path)
-            else:
-                shutil.copy2(s_path, d_path)
-
-    recursive_copy(src, dst)
-
-
+    print("Generating page...")
+    generate_page(
+        os.path.join(dir_path_content, "index.md"),
+        template_path,
+        os.path.join(dir_path_public, "index.html"),
+    )
 
 
 main()
