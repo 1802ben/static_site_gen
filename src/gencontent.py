@@ -36,7 +36,7 @@ def extract_title(md):
     raise ValueError("no title found")
 
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path, basepath):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     for root, dirs, files in os.walk(dir_path_content):
         for filename in files:
             if filename.endswith(".md"):
